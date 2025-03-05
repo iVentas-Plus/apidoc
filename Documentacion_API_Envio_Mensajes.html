@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación API: Envío de Mensajes de Plantilla</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Documentación para la Petición de Envio de Mensajes de Plantilla</h1>
+
+    <h2>Endpoint:</h2>
+    <p><strong>URL:</strong> <code>https://restservices.iventas.com/v1/messages/send_wa_broadcast</code></p>
+    <p><strong>Método:</strong> POST</p>
+    <p><strong>Formato de Contenido:</strong> application/json</p>
+
+    <h2>Descripción:</h2>
+    <p>Este endpoint permite enviar mensajes de plantilla a través de WhatsApp desde nuestra plataforma. Además, admite funcionalidades como programar envíos a una hora específica y adjuntar archivos.</p>
+
+    <h2>Estructura de la Petición:</h2>
+    <pre>{
+    "templateName": "string",
+    "leads": [
+        {
+            "phone": "string",
+            "vars": ["string", "string"]
+        }
+    ],
+    "token": "string",
+    "fileUrl": "string",
+    "sendAt": "string",
+    "name": "string"
+}</pre>
+
+    <h2>Campos:</h2>
+    <ul>
+        <li><strong>templateName</strong>: Nombre de la plantilla registrada en el sistema. (Tipo: String)</li>
+        <li><strong>leads</strong>: Lista de destinatarios del mensaje. (Tipo: Array de objetos)
+            <ul>
+                <li><strong>phone</strong>: Número de teléfono del destinatario en formato internacional. (Tipo: String)</li>
+                <li><strong>vars</strong>: Variables para personalizar la plantilla. (Tipo: Array de strings)</li>
+            </ul>
+        </li>
+        <li><strong>token</strong>: Token de autenticación para la petición. (Tipo: String)</li>
+        <li><strong>fileUrl</strong>: URL del archivo adjunto (opcional). (Tipo: String)</li>
+        <li><strong>sendAt</strong>: Fecha y hora programada para el envío del mensaje en formato ISO 8601. (Tipo: String)</li>
+        <li><strong>name</strong>: Nombre identificador del envío. (Tipo: String)</li>
+    </ul>
+
+    <h2>Tipos de Plantillas en WhatsApp API:</h2>
+    <ul>
+        <li><strong>Mensajes de Servicio (Utility):</strong> Notificaciones transaccionales o informativas, como confirmaciones de pedidos.</li>
+        <li><strong>Mensajes de Autenticación (Authentication):</strong> Envío de códigos de verificación o contraseñas de un solo uso.</li>
+        <li><strong>Mensajes de Marketing (Marketing):</strong> Promoción de productos, servicios o campañas.</li>
+        <li><strong>Mensajes Interactivos:</strong> Incluyen botones o listas para facilitar la interacción del usuario.</li>
+    </ul>
+    <p>Para más información sobre precios y condiciones: <a href="https://business.whatsapp.com/products/platform-pricing" target="_blank">WhatsApp Business Platform Pricing</a>.</p>
+
+    <h2>Ejemplo de Petición:</h2>
+    <h3>Envío Inmediato:</h3>
+    <pre>curl --location 'https://restservices.iventas.com/v1/messages/send_wa_broadcast' --header 'Content-Type: application/json' --data '{
+    "templateName": "real_alcal_sur_1",
+    "leads": [
+        {"phone": "5215532715902","vars": []}
+    ],
+    "token": "<CHANNEL_TOKEN>",
+    "fileUrl": "",
+    "name": "test"
+}'</pre>
+
+    <h3>Envío Programado con Archivo:</h3>
+    <pre>curl --location 'https://restservices.iventas.com/v1/messages/send_wa_broadcast' --header 'Content-Type: application/json' --data '{
+    "templateName": "real_alcal_sur_1",
+    "leads": [
+        {"phone": "5215532715902","vars": ["John", "Order#123"]}
+    ],
+    "token": "<CHANNEL_TOKEN>",
+    "fileUrl": "https://example.com/file.pdf",
+    "sendAt": "2024-02-15T22:00:00.000Z",
+    "name": "pedido_123"
+}'</pre>
+
+    <h2>Contacto para Soporte:</h2>
+    <p>Para dudas o problemas con la integración, contacte al equipo de soporte de iVentas.</p>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentación de API - Envío de Mensajes Simples</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .endpoint {
+      margin: 20px 0;
+    }
+    .method {
+      font-weight: bold;
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Documentación de API</h1>
+    <h2>Envío de Mensajes Simples</h2>
+    <div class="endpoint">
+      <h3>Endpoint</h3>
+      <p><code>POST</code> <code>https://restservices.iventas.com/v2/company/:companyId/channel/:channelId/messages</code></p>
+      <p><strong>Descripción:</strong> Permite enviar mensajes simples (texto o archivo) a un contacto específico.</p>
+    </div>
+
+    <div class="parameters">
+      <h3>Parámetros</h3>
+      <ul>
+        <li><strong>:companyId</strong> (string, requerido) - ID único de la compañía.</li>
+        <li><strong>:channelId</strong> (string, requerido) - ID único del canal utilizado para enviar mensajes.</li>
+      </ul>
+    </div>
+
+    <div class="headers">
+      <h3>Encabezados</h3>
+      <ul>
+        <li><strong>Authorization</strong> (string, requerido) - Token Bearer para autenticación. Ejemplo: <code>Bearer iventas-apiv2-xxxxxxxx</code></li>
+        <li><strong>Content-Type</strong> (string, requerido) - Tipo de contenido. Valor esperado: <code>application/json</code></li>
+        <li><strong>User-Agent</strong> (string, opcional) - Identificador del cliente que realiza la petición.</li>
+      </ul>
+    </div>
+
+    <div class="body">
+      <h3>Cuerpo de la Solicitud</h3>
+      <p>Se debe enviar un JSON con los siguientes campos:</p>
+      <pre><code>{
+  "phone": "5215511223344", // Número de teléfono del destinatario en formato internacional
+  "text": "mensaje simple sin plantilla", // (opcional) Texto del mensaje
+  "fileUrl": "url de la imagen" // (opcional) URL del archivo a enviar
+}</code></pre>
+      <p><strong>Notas:</strong></p>
+      <ul>
+        <li>Al menos uno de los campos <code>text</code> o <code>fileUrl</code> debe estar lleno.</li>
+        <li>Pueden enviarse ambos campos juntos si se desea incluir texto y un archivo en el mismo mensaje.</li>
+      </ul>
+    </div>
+
+    <div class="additional-info">
+      <h3>Información Adicional</h3>
+      <p><strong>Ventana de 24 horas de WhatsApp API:</strong></p>
+      <ul>
+        <li>Una vez que el cliente responde a una plantilla de mensaje, se abre una ventana de 24 horas durante la cual se pueden enviar mensajes libres (texto, imágenes, archivos, etc.) sin restricciones.</li>
+        <li>Si la ventana de 24 horas expira, será necesario enviar nuevamente una plantilla aprobada para reabrir el canal de comunicación.</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <h3>Ejemplo de Solicitud</h3>
+      <pre><code>curl --request POST \
+--url https://restservices.iventas.com/v2/company/64b5cbbba7b11b000868b50b/channel/64a2f0e9a7b11b00085d3f19/messages \
+--header 'Authorization: Bearer iventas-apiv2-03430ff2-4957-47d7-8a7e-a8df982cf1e9' \
+--header 'Content-Type: application/json' \
+--data '{
+  "phone": "5215511223344",
+  "text": "mensaje simple sin plantilla",
+  "fileUrl": "url de la imagen"
+}'</code></pre>
+    </div>
+
+    <div class="response">
+      <h3>Ejemplo de Respuesta</h3>
+      <p>En caso de éxito, la API devuelve un objeto JSON con el estado del mensaje:</p>
+      <pre><code>{
+  "sent": true
+}</code></pre>
+    </div>
+  </div>
+</body>
+</html>

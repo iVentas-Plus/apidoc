@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentación de API - Estadísticas de Broadcast</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .endpoint {
+      margin: 20px 0;
+    }
+    .method {
+      font-weight: bold;
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Documentación de API</h1>
+    <h2>Estadísticas de Broadcast</h2>
+    <div class="endpoint">
+      <h3>Endpoint</h3>
+      <p><code>GET</code> <code>https://restservices.iventas.com/v2/broadcast/stats/:id</code></p>
+      <p><strong>Descripción:</strong> Recupera las estadísticas de un broadcast específico.</p>
+    </div>
+
+    <div class="parameters">
+      <h3>Parámetros</h3>
+      <ul>
+        <li><strong>:id</strong> (string, requerido) - El ID único del broadcast, devuelto por la petición de envío de plantillas.</li>
+      </ul>
+    </div>
+
+    <div class="headers">
+      <h3>Encabezados</h3>
+      <ul>
+        <li><strong>Authorization</strong> (string, requerido) - Token Bearer para autenticación. Ejemplo: <code>Bearer iventas-apiv2-xxxxxxxx</code></li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <h3>Ejemplo de Solicitud</h3>
+      <pre><code>curl --request GET \
+--url https://restservices.iventas.com/v2/broadcast/stats/66d236af24aa9a00089ba6c7 \
+--header 'Authorization: Bearer iventas-apiv2-03430ff2-4957-47d7-8a7e-a8df982cf1e9'</code></pre>
+    </div>
+
+    <div class="response">
+      <h3>Respuesta</h3>
+      <p>En caso de éxito, la API devuelve un objeto JSON con las estadísticas del broadcast.</p>
+      <pre><code>{
+  "successfulMessages": [
+    "5215563254586",
+    "5215532448945",
+    "5215525703262",
+    "5215544907920",
+    "5215523142528"
+  ],
+  "failedMessages": [
+    "5212225481346",
+    "5215591634168",
+    "5219222204539",
+    "5215564226810",
+    "5215541576765"
+  ],
+  "sentMessages": [
+    "5215572323873",
+    "5215540902182",
+    "5215518019707",
+    "5215525595603",
+    "5215521133540"
+  ],
+  "deliveredMessages": [
+    "5215534784025",
+    "5215548881979",
+    "5215513299015",
+    "5215534720652",
+    "5215611102679"
+  ],
+  "viewedMessages": [
+    "5215525703262",
+    "5215544907920",
+    "5215523142528",
+    "5215511355436",
+    "5215552522604"
+  ]
+}</code></pre>
+      <p><strong>Descripción de los campos:</strong></p>
+      <ul>
+        <li><strong>successfulMessages:</strong> Lista de números que recibieron el mensaje con éxito.</li>
+        <li><strong>failedMessages:</strong> Lista de números a los que no se pudo enviar el mensaje.</li>
+        <li><strong>sentMessages:</strong> Lista de números a los que se envió el mensaje.</li>
+        <li><strong>deliveredMessages:</strong> Lista de números a los que se confirmó la entrega del mensaje.</li>
+        <li><strong>viewedMessages:</strong> Lista de números que visualizaron el mensaje.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

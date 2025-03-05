@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación API: Creación de Plantillas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Documentación API: Creación de Plantillas</h1>
+
+    <h2>Endpoint:</h2>
+    <p><strong>URL:</strong> <code>https://restservices.iventas.com/v2/company/64b5cbbba7b11b000868b50b/channel/64a2f0e9a7b11b00085d3f19/templates</code></p>
+    <p><strong>Método:</strong> POST</p>
+    <p><strong>Formato de Contenido:</strong> application/json</p>
+
+    <h2>Descripción:</h2>
+    <p>Este endpoint permite crear plantillas de mensajes en WhatsApp API. Las plantillas pueden ser simples o con variables para personalizar el contenido según el destinatario.</p>
+
+    <h2>Estructura de la Petición:</h2>
+    <pre>{
+    "template": {
+    "name": "string",
+    "category": "string",
+    "lang": "string",
+    "text": "string",
+    "type": "string",
+    "mediaUrl": "string",
+    "variables": ["string"]
+  }
+}</pre>
+
+    <h2>Campos:</h2>
+    <ul>
+        <li><strong>name</strong>: Nombre único de la plantilla. (Tipo: String)</li>
+        <li><strong>category</strong>: Categoría de la plantilla, como <code>UTILITY</code>, <code>AUTHENTICATION</code>, o <code>MARKETING</code>. (Tipo: String)</li>
+        <li><strong>lang</strong>: Idioma de la plantilla. Ejemplo: <code>es</code> para español. (Tipo: String)</li>
+        <li><strong>text</strong>: Texto del mensaje, con o sin variables. (Tipo: String)</li>
+        <li><strong>type</strong>: Tipo de plantilla, como <code>TEXT</code>, <code>IMAGE</code>, o <code>VIDEO</code>. (Tipo: String)</li>
+        <li><strong>mediaUrl</strong>: URL del archivo multimedia asociado. (Tipo: String)</li>
+        <li><strong>variables</strong>: Lista opcional de variables para personalizar el mensaje. (Tipo: Array de Strings)</li>
+    </ul>
+
+    <h2>Tipos de Plantillas:</h2>
+    <h3>Plantillas Simples:</h3>
+    <p>Las plantillas simples no contienen variables y el texto es estático. Se utilizan para mensajes que no requieren personalización.</p>
+    <pre>curl --request POST \
+  --url https://restservices.iventas.com/v2/company/64b5cbbba7b11b000868b50b/channel/64a2f0e9a7b11b00085d3f19/templates \
+  --header 'Authorization: Bearer API_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "template": {
+    "name": "recordatorio_prueba_img",
+        "category": "UTILITY",
+        "lang": "es",
+        "text": "Buenos días! espero estés teniendo un gran día, te notifico que tu periodo de prueba está próximo a vencer :)",
+        "type": "IMAGE",
+        "mediaUrl": "https://iventas-media.s3.amazonaws.com/broadcast/cupon.jpeg"
+  }
+}'</pre>
+
+    <h3>Plantillas con Variables:</h3>
+    <p>Las plantillas con variables permiten personalizar el contenido del mensaje mediante el uso de marcadores como <code>{{1}}</code>, <code>{{2}}</code>, etc., que se reemplazan con valores específicos para cada destinatario.</p>
+    <pre>curl --request POST \
+  --url https://restservices.iventas.com/v2/company/64b5cbbba7b11b000868b50b/channel/64a2f0e9a7b11b00085d3f19/templates \
+  --header 'Authorization: Bearer API_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "template": {
+    "name": "recordatorio_prueba_variables",
+        "category": "UTILITY",
+        "lang": "es",
+        "text": "Buenos días {{1}}! espero estés teniendo un gran día, te notifico que tu periodo de prueba está próximo a vencer :)",
+        "type": "IMAGE",
+        "mediaUrl": "https://iventas-media.s3.amazonaws.com/broadcast/cupon.jpeg",
+        "variables": ["Lalo"]
+  }
+}'</pre>
+
+<h3>Plantillas con Acciones (únicamente plantillas tipo MARKETING y UTILITY):</h3>
+    <p>Las plantillas permiten agregar Botones (QUICK_REPLY) de texto al mensaje, máximo 21 caracteres.</p>
+    <pre>curl --request POST \
+  --url https://restservices.iventas.com/v2/company/64b5cbbba7b11b000868b50b/channel/64a2f0e9a7b11b00085d3f19/templates \
+  --header 'Authorization: Bearer API_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "template": {
+    "name": "recordatorio_prueba_variables",
+        "category": "MARKETING",
+        "lang": "es",
+        "text": "Buenos días {{1}}! espero estés teniendo un gran día, te notifico que tu periodo de prueba está próximo a vencer :)",
+        "type": "IMAGE",
+        "mediaUrl": "https://iventas-media.s3.amazonaws.com/broadcast/cupon.jpeg",
+        "variables": ["Lalo"],
+        "buttons" [{ text: "Aceptar", type: "QUICK_REPLY" }, { text: "Rechazar", type: "QUICK_REPLY" }]
+  }
+}'</pre>
+
+    <h2>Diferencias entre Plantillas Simples y con Variables:</h2>
+    <ul>
+        <li><strong>Plantillas Simples:</strong> No requieren personalización. El mensaje es igual para todos los destinatarios.</li>
+        <li><strong>Plantillas con Variables:</strong> Permiten personalizar el contenido mediante variables dinámicas, ideales para incluir nombres, números de pedido, o cualquier información específica.</li>
+    </ul>
+
+    <h2>Contacto para Soporte:</h2>
+    <p>Para dudas o problemas con la integración, contacte al equipo de soporte de iVentas.</p>
+</body>
+</html>
